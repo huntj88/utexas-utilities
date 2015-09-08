@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -114,6 +115,7 @@ public class UTilitiesActivity extends SherlockActivity {
         final Intent data = new Intent(this, DataUsageActivity.class);
         final Intent menu = new Intent(this, MenuActivity.class);
         final Intent blackboard = new Intent(this, BlackboardPanesActivity.class);
+        final Intent find = new Intent(this,FindScheduleActivity.class);
 
         // simple struct-like class to help handle related data
         class DashboardButtonData {
@@ -139,7 +141,7 @@ public class UTilitiesActivity extends SherlockActivity {
             }
         }
 
-        DashboardButtonData buttonData[] = new DashboardButtonData[6];
+        DashboardButtonData buttonData[] = new DashboardButtonData[7];
         buttonData[0] = new DashboardButtonData(schedule, R.id.schedule_button, utdAuthCookie, 'u',
                 scheduleCheck);
         buttonData[1] = new DashboardButtonData(balance, R.id.balance_button, utdAuthCookie, 'u',
@@ -150,8 +152,8 @@ public class UTilitiesActivity extends SherlockActivity {
                 dataCheck);
         buttonData[4] = new DashboardButtonData(map, R.id.map_button);
         buttonData[5] = new DashboardButtonData(menu, R.id.menu_button);
-
-        for (int i = 0; i < 6; i++) {
+        buttonData[6] = new DashboardButtonData(find, R.id.find_schedule, utdAuthCookie, 'u', scheduleCheck);
+        for (int i = 0; i < 7; i++) {
             ImageButton ib = (ImageButton) findViewById(buttonData[i].imageButtonId);
             ib.setOnTouchListener(new ImageButtonTouchListener(
                     (TransitionDrawable) ib.getDrawable()));

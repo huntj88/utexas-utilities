@@ -153,5 +153,27 @@
 		    android:layout_alignBottom="@+id/menu_button"
 		    android:layout_alignRight="@+id/menu_button"/>
 		</RelativeLayout>
+
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="1">
+
+			<ImageView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@null"
+				android:layout_alignBottom="@+id/find_schedule"
+				android:layout_alignRight="@+id/find_schedule" />
+
+			<ImageButton
+				android:id="@+id/find_schedule"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:src="@drawable/menu_image_button"
+				android:layout_centerInParent="true"
+				android:background="#00000000" />
+
+		</RelativeLayout>
 	</TableRow>
 </TableLayout>

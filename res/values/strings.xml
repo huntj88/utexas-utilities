@@ -189,4 +189,8 @@ Also a big thanks to yukuku for his AmazingListView library (http://code.google.
         <item>0</item>
         <item>1</item>
     </string-array>
+    <string name="title_activity_find_schedule">FindScheduleActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>
