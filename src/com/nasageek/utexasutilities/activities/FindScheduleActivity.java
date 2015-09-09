@@ -24,7 +24,12 @@ public class FindScheduleActivity extends SherlockActivity {
     private parseTask fetch;
     private String tag = "FindScheduleA";
     private TextView searchBoxDepartment,searchBoxCourseNum;
-    ArrayList<ClassListHolder> classes = new ArrayList<>(); //holds all the
+    private int classAmount;
+    ArrayList<ArrayList<UTClass>> classes = new ArrayList<>(); //holds all the classes in a two arraylist
+    //the first dimension to represent all the types of classes: chem 101, CS 312, GEO 405.
+    //the second dimension is the represent all the times that class is avaliable.
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,7 @@ public class FindScheduleActivity extends SherlockActivity {
 
     public void lop(String string)
     {
-
+        ArrayList<UTClass> innerArray = new ArrayList<>();
         if(string.length()>39000) {
             string = string.substring(39000); //removes the first 39000 lines as not part of the class listings
             Scanner scan = new Scanner(string);
@@ -108,8 +113,8 @@ public class FindScheduleActivity extends SherlockActivity {
                 }
                 if(didDays&&didTime)
                 {
-                    utClass = new UTClass(days,times,"cs","blah",1);
-                    utClass.getArraySchedule();
+
+                    innerArray.add(new UTClass(days,times,"cs","blah",classAmount));
                     didDays=false;
                     didTime=false;
                     days = "";
@@ -117,6 +122,12 @@ public class FindScheduleActivity extends SherlockActivity {
             }
             scan.close();
         }
+
+        if(innerArray.size()>0) {
+            classAmount++;
+            classes.add(innerArray);
+        }
+        Log.d("num type class",classes.size()+"");
     }
 
     private class parseTask extends AsyncTask<Boolean, String, Integer>
