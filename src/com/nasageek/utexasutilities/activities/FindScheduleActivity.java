@@ -3,6 +3,7 @@ package com.nasageek.utexasutilities.activities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -23,7 +24,8 @@ public class FindScheduleActivity extends SherlockActivity {
 
     private parseTask fetch;
     private String tag = "FindScheduleA";
-    private TextView searchBoxDepartment,searchBoxCourseNum;
+    private EditText searchBoxDepartment,searchBoxCourseNum;
+    private TextView[] typedClasses = new TextView[6];
     private int classAmount;
     ArrayList<ArrayList<UTClass>> classes = new ArrayList<>(); //holds all the classes in a two arraylist
     //the first dimension to represent all the types of classes: chem 101, CS 312, GEO 405.
@@ -35,8 +37,14 @@ public class FindScheduleActivity extends SherlockActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_schedule);
-        searchBoxDepartment = (TextView) findViewById(R.id.search_box_department);
-        searchBoxCourseNum = (TextView) findViewById(R.id.search_box_course_num);
+        searchBoxDepartment = (EditText) findViewById(R.id.search_box_department);
+        searchBoxCourseNum = (EditText) findViewById(R.id.search_box_course_num);
+        typedClasses[0] = (TextView) findViewById(R.id.textView);
+        typedClasses[1] = (TextView) findViewById(R.id.textView2);
+        typedClasses[2] = (TextView) findViewById(R.id.textView3);
+        typedClasses[3] = (TextView) findViewById(R.id.textView4);
+        typedClasses[4] = (TextView) findViewById(R.id.textView5);
+        typedClasses[5] = (TextView) findViewById(R.id.textView6);
         /*OkHttpClient client = new OkHttpClient();
         fetch = new parseTask(client);
         Utility.parallelExecute(fetch, false);*/
@@ -49,6 +57,10 @@ public class FindScheduleActivity extends SherlockActivity {
         Utility.parallelExecute(fetch, false);
     }
 
+    public void nextButton(View v)
+    {
+
+    }
     public void log(String string)
     {
         for(int i=0; i<string.length(); i+=1000)
@@ -65,13 +77,12 @@ public class FindScheduleActivity extends SherlockActivity {
     public void lop(String string)
     {
         ArrayList<UTClass> innerArray = new ArrayList<>();
-        if(string.length()>39000) {
-            string = string.substring(39000); //removes the first 39000 lines as not part of the class listings
+        if(string.length()>39200) {
+            string = string.substring(39200); //removes the first 39200 lines as not part of the class listings
             Scanner scan = new Scanner(string);
             String line = "";
             String days = "";
             String times="";
-            UTClass utClass;
             boolean didDays=false;
             boolean didTime=false;
             while (scan.hasNextLine()) {
@@ -91,6 +102,7 @@ public class FindScheduleActivity extends SherlockActivity {
 
                 if (line.contains("Hour")) {
                     int amount = 0;
+                    //Log.d("hour",line);
                     times = line.substring(38, 59);
                     for (int x = 0; x < 2; x++) {
                         if (times.contains("<")) {
@@ -126,6 +138,7 @@ public class FindScheduleActivity extends SherlockActivity {
         if(innerArray.size()>0) {
             classAmount++;
             classes.add(innerArray);
+
         }
         Log.d("num type class",classes.size()+"");
     }
@@ -188,6 +201,12 @@ public class FindScheduleActivity extends SherlockActivity {
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer h)
+        {
+            typedClasses[classAmount-1].setText(searchDepartment+" "+searchCourse);
         }
     }
 }
