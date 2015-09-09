@@ -31,6 +31,14 @@ public class CalculateAllSchedulesThread extends AsyncTask<Boolean, String, Inte
 
     @Override
     protected Integer doInBackground(Boolean... params) {
+
+        //todo          make it accept any
+        //todo          number of results.
+        //todo          currently if you accept
+        //todo          less than four,
+        //todo          its not gonna work
+
+
         for(int x = 0;x<classes.get(0).size();x++)
         {
             temp1.add(classes.get(0).get(x).getArraySchedule());
@@ -57,7 +65,7 @@ public class CalculateAllSchedulesThread extends AsyncTask<Boolean, String, Inte
                 }
                 Log.d("schedule", string);
             }
-            Log.d("schedule", "---------------------------------------------------------------------");
+            Log.d("schedule", "------------");
         }
 
         Log.d("size",temp2.size()+"");
