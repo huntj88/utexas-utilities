@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.huntj88.UTClass;
 import com.nasageek.utexasutilities.AsyncTask;
 import com.nasageek.utexasutilities.R;
 import com.nasageek.utexasutilities.Utility;
@@ -60,8 +61,11 @@ public class FindScheduleActivity extends SherlockActivity {
             string = string.substring(39000); //removes the first 39000 lines as not part of the class listings
             Scanner scan = new Scanner(string);
             String line = "";
-            String days = "days: ";
-            String times;
+            String days = "";
+            String times="";
+            UTClass utClass;
+            boolean didDays=false;
+            boolean didTime=false;
             while (scan.hasNextLine()) {
                 line = scan.nextLine();
                 if (line.contains("Days")) {
@@ -74,7 +78,7 @@ public class FindScheduleActivity extends SherlockActivity {
                         }
                     }
                     Log.d("tag", days);
-                    days = "days: ";
+                    didDays=true;
                 }
 
                 if (line.contains("Hour")) {
@@ -97,8 +101,18 @@ public class FindScheduleActivity extends SherlockActivity {
                         }
                     }
                     Log.d("tag", times);
+                    didTime=true;
+                }
+                if(didDays&&didTime)
+                {
+                    utClass = new UTClass(days,times,"cs","blah",1);
+                    utClass.getTimeDayPairs();
+                    didDays=false;
+                    didTime=false;
+                    days = "";
                 }
             }
+            scan.close();
         }
     }
 
