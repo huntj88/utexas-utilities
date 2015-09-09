@@ -1,13 +1,18 @@
 package com.nasageek.utexasutilities.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.huntj88.ClassListHolder;
+import com.huntj88.ScheduleHolderFragment;
+import com.huntj88.SelectClassesFragment;
 import com.huntj88.UTClass;
 import com.nasageek.utexasutilities.AsyncTask;
 import com.nasageek.utexasutilities.R;
@@ -20,13 +25,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class FindScheduleActivity extends SherlockActivity {
+public class FindScheduleActivity extends FragmentActivity implements SelectClassesFragment.SelectClassesListener{
 
     private parseTask fetch;
     private String tag = "FindScheduleA";
-    private EditText searchBoxDepartment,searchBoxCourseNum;
-    private TextView[] typedClasses = new TextView[6];
     private int classAmount;
+    SelectClassesFragment one = new SelectClassesFragment();
     ArrayList<ArrayList<UTClass>> classes = new ArrayList<>(); //holds all the classes in a two arraylist
     //the first dimension to represent all the types of classes: chem 101, CS 312, GEO 405.
     //the second dimension is the represent all the times that class is avaliable.
@@ -37,23 +41,16 @@ public class FindScheduleActivity extends SherlockActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_schedule);
-        searchBoxDepartment = (EditText) findViewById(R.id.search_box_department);
-        searchBoxCourseNum = (EditText) findViewById(R.id.search_box_course_num);
-        typedClasses[0] = (TextView) findViewById(R.id.textView);
-        typedClasses[1] = (TextView) findViewById(R.id.textView2);
-        typedClasses[2] = (TextView) findViewById(R.id.textView3);
-        typedClasses[3] = (TextView) findViewById(R.id.textView4);
-        typedClasses[4] = (TextView) findViewById(R.id.textView5);
-        typedClasses[5] = (TextView) findViewById(R.id.textView6);
-        /*OkHttpClient client = new OkHttpClient();
-        fetch = new parseTask(client);
-        Utility.parallelExecute(fetch, false);*/
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.placeholder, one);
+        ft.commit();
     }
 
-    public void startSearch(View v)
-    {
+    @Override
+    public void selectedAClass(String department, String course) {
         OkHttpClient client = new OkHttpClient();
-        fetch = new parseTask(client,searchBoxDepartment.getText().toString(),searchBoxCourseNum.getText().toString());
+        fetch = new parseTask(client,department,course);
         Utility.parallelExecute(fetch, false);
     }
 
@@ -206,7 +203,8 @@ public class FindScheduleActivity extends SherlockActivity {
         @Override
         protected void onPostExecute(Integer h)
         {
-            typedClasses[classAmount-1].setText(searchDepartment+" "+searchCourse);
+            one.test(classAmount - 1, searchDepartment + " " + searchCourse);
+            //one.typedClasses[classAmount-1].setText(searchDepartment+" "+searchCourse);
         }
     }
 }
