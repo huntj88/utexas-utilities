@@ -28,13 +28,13 @@ public class UTClass {
 
     public ArrayList<TimeDayPair> getTimeDayPairs()
     {
-        Log.d("UTClass","days: "+days);
+        //Log.d("UTClass","days: "+days);
         ArrayList<TimeDayPair> array = new ArrayList<>();
         int timeSpot = 0;                                           //which part of the time string to parse from
         for(int i=0;i<days.length();i++)
         {
             char next = days.charAt(i);
-            Log.d("UTClass",next+"");
+            //Log.d("UTClass",next+"");
             switch (next)
             {
                 case ' ':
@@ -71,13 +71,6 @@ public class UTClass {
 
     public TimeDayPair buildPair(int timeSpot, int day)
     {
-        /*int index1 = time.indexOf(":");
-        while (index1 >= 0) {
-            Log.e("see index",index1+"");
-            index1 = time.indexOf(":", index1 + 1);
-        }*/
-
-        //int index=time.indexOf(':',timeSpot);
         int time1=0;
         int time1End=0;
         int time2=0;
@@ -98,6 +91,23 @@ public class UTClass {
             time2 = Integer.parseInt(temp);
             //time2 = Integer.parseInt(time.substring(index1-2, index1));
             time2End = Integer.parseInt(time.substring(index1+1, index1+3));
+
+            if(time.substring(0,index1-2).contains("p.m.")&&time1!=12)
+            {
+                time1+=12;
+            }
+            if(time.length()>24) {
+                if (time.substring(index1 + 1, index2 - 2).contains("p.m.") && time2 != 12) {
+                    time2 += 12;
+                }
+            }
+            else
+            {
+                if (time.substring(index1 + 1).contains("p.m.") && time2 != 12) {
+                    time2 += 12;
+                }
+            }
+
         }
         else if(timeSpot==2)
         {
@@ -112,11 +122,28 @@ public class UTClass {
                 temp=temp.substring(1);
             time2 = Integer.parseInt(temp);
             time2End = Integer.parseInt(time.substring(index3+1, index3+3));
+
+            if(time.substring(index2+1,index3-2).contains("p.m.")&&time1!=12)
+            {
+                time1+=12;
+            }
+            if(time.substring(index3+1).contains("p.m.")&&time2!=12)
+            {
+                time2+=12;
+            }
         }
-        Log.d("UTClass",timeSpot+" "+day+" "+time1+" "+time1End+" "+time2+" "+time2End);
+        //Log.d("UTClass",timeSpot+" "+day+" "+time1+" "+time1End+" "+time2+" "+time2End);
+        return new TimeDayPair(day,getTimeInArray(time1,time1End),getTimeInArray(time2,time2End));
+    }
 
+    public int getTimeInArray(int first,int second)
+    {
 
-
-        return null;
+        int timeInArray = first - 8;
+        timeInArray=timeInArray*2;
+        if(second!=0)
+            timeInArray++;
+        Log.d("UTClass",""+timeInArray);
+        return timeInArray;
     }
 }
