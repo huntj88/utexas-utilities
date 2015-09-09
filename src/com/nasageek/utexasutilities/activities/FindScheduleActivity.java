@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.huntj88.CalculateAllSchedulesThread;
 import com.huntj88.ClassListHolder;
 import com.huntj88.ScheduleHolderFragment;
 import com.huntj88.SelectClassesFragment;
@@ -28,8 +29,9 @@ import java.util.Scanner;
 public class FindScheduleActivity extends FragmentActivity implements SelectClassesFragment.SelectClassesListener{
 
     private parseTask fetch;
+    private CalculateAllSchedulesThread calculate;
     private String tag = "FindScheduleA";
-    private int classAmount;
+    private int classAmount=1;
     SelectClassesFragment one = new SelectClassesFragment();
     ArrayList<ArrayList<UTClass>> classes = new ArrayList<>(); //holds all the classes in a two arraylist
     //the first dimension to represent all the types of classes: chem 101, CS 312, GEO 405.
@@ -56,7 +58,8 @@ public class FindScheduleActivity extends FragmentActivity implements SelectClas
 
     public void nextButton(View v)
     {
-
+        calculate = new CalculateAllSchedulesThread(classes);
+        Utility.parallelExecute(calculate, false);
     }
     public void log(String string)
     {
@@ -203,7 +206,7 @@ public class FindScheduleActivity extends FragmentActivity implements SelectClas
         @Override
         protected void onPostExecute(Integer h)
         {
-            one.test(classAmount - 1, searchDepartment + " " + searchCourse);
+            one.test(classAmount, searchDepartment + " " + searchCourse);
             //one.typedClasses[classAmount-1].setText(searchDepartment+" "+searchCourse);
         }
     }

@@ -39,7 +39,7 @@ public class UTClass {
             }
         }
 
-        for(int y=0;y<24;y++)
+        /*for(int y=0;y<24;y++)
         {
             String string="";
             for(int x=0;x<5;x++)
@@ -47,7 +47,7 @@ public class UTClass {
                 string+="["+schedule[x][y]+"]";
             }
             Log.d("schedule",string);
-        }
+        }*/
 
         return schedule;
     }
@@ -91,7 +91,7 @@ public class UTClass {
             }
         }
 
-        Log.e("UTClass Array",array.size()+"");
+        //Log.e("UTClass Array",array.size()+"");
     }
 
     public TimeDayPair buildPair(int timeSpot, int day)
