@@ -16,6 +16,8 @@ public class UTClass {
     private String className;
     private String professor;
     private int id;
+    private int[][] schedule = new int[5][24];
+    ArrayList<TimeDayPair> array = new ArrayList<>();
 
     public UTClass(String days,String time, String className, String professor,int id)
     {
@@ -26,10 +28,33 @@ public class UTClass {
         this.id=id;
     }
 
-    public ArrayList<TimeDayPair> getTimeDayPairs()
+    public int[][] getArraySchedule()
+    {
+        getTimeDayPairs();
+        for(int x=0;x<array.size();x++)
+        {
+            for(int y=array.get(x).startTime;y<array.get(x).endTime;y++)
+            {
+                schedule[array.get(x).day][y] = id;
+            }
+        }
+
+        for(int y=0;y<24;y++)
+        {
+            String string="";
+            for(int x=0;x<5;x++)
+            {
+                string+="["+schedule[x][y]+"]";
+            }
+            Log.d("schedule",string);
+        }
+
+        return schedule;
+    }
+
+    public void getTimeDayPairs()
     {
         //Log.d("UTClass","days: "+days);
-        ArrayList<TimeDayPair> array = new ArrayList<>();
         int timeSpot = 0;                                           //which part of the time string to parse from
         for(int i=0;i<days.length();i++)
         {
@@ -41,23 +66,23 @@ public class UTClass {
                     timeSpot+=2;
                     break;
                 case 'M':
-                    array.add(buildPair(timeSpot,1));
+                    array.add(buildPair(timeSpot,0));
                     break;
                 case 'W':
-                    array.add(buildPair(timeSpot,3));
+                    array.add(buildPair(timeSpot,2));
                     break;
                 case 'F':
-                    array.add(buildPair(timeSpot,5));
+                    array.add(buildPair(timeSpot,4));
                     break;
                 case 'T':
 
                     if(days.length()>i+1&&days.charAt(i+1)=='H')    //thursday
                     {
-                        array.add(buildPair(timeSpot, 4));
+                        array.add(buildPair(timeSpot, 3));
                         i++;
                     }
                     else                                            //tuesday
-                        array.add(buildPair(timeSpot,2));
+                        array.add(buildPair(timeSpot,1));
 
                     break;
                 default:
@@ -66,7 +91,7 @@ public class UTClass {
             }
         }
 
-        return null;
+        Log.e("UTClass Array",array.size()+"");
     }
 
     public TimeDayPair buildPair(int timeSpot, int day)
@@ -143,7 +168,7 @@ public class UTClass {
         timeInArray=timeInArray*2;
         if(second!=0)
             timeInArray++;
-        Log.d("UTClass",""+timeInArray);
+        //Log.d("UTClass",""+timeInArray);
         return timeInArray;
     }
 }

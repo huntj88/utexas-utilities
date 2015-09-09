@@ -9,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by James on 9/8/2015.
  */
-public class ClassListHolder{
+public class ClassListHolder{ //holds all instances of one class
 
     ArrayList<UTClass> classList = new ArrayList<>();
     int[][] classes = new int[5][20];

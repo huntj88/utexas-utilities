@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.huntj88.ClassListHolder;
 import com.huntj88.UTClass;
 import com.nasageek.utexasutilities.AsyncTask;
 import com.nasageek.utexasutilities.R;
@@ -15,6 +16,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FindScheduleActivity extends SherlockActivity {
@@ -22,6 +24,7 @@ public class FindScheduleActivity extends SherlockActivity {
     private parseTask fetch;
     private String tag = "FindScheduleA";
     private TextView searchBoxDepartment,searchBoxCourseNum;
+    ArrayList<ClassListHolder> classes = new ArrayList<>(); //holds all the
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +80,7 @@ public class FindScheduleActivity extends SherlockActivity {
                             days += line.charAt(i);
                         }
                     }
-                    Log.d("tag", days);
+                    //Log.d("tag", days);
                     didDays=true;
                 }
 
@@ -100,13 +103,13 @@ public class FindScheduleActivity extends SherlockActivity {
                             }
                         }
                     }
-                    Log.d("tag", times);
+                    //Log.d("tag", times);
                     didTime=true;
                 }
                 if(didDays&&didTime)
                 {
                     utClass = new UTClass(days,times,"cs","blah",1);
-                    utClass.getTimeDayPairs();
+                    utClass.getArraySchedule();
                     didDays=false;
                     didTime=false;
                     days = "";
