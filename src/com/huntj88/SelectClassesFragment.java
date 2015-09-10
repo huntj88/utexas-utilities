@@ -18,7 +18,7 @@ public class SelectClassesFragment extends Fragment implements View.OnClickListe
 
     private SelectClassesListener mListener;
     private EditText searchBoxDepartment,searchBoxCourseNum;
-    private TextView[] typedClasses = new TextView[6];
+    private TextView[] typedClasses = new TextView[9];
     private Button select;
 
     public SelectClassesFragment() {
@@ -44,6 +44,9 @@ public class SelectClassesFragment extends Fragment implements View.OnClickListe
         typedClasses[3] = (TextView) v.findViewById(R.id.textView4);
         typedClasses[4] = (TextView) v.findViewById(R.id.textView5);
         typedClasses[5] = (TextView) v.findViewById(R.id.textView6);
+        typedClasses[6] = (TextView) v.findViewById(R.id.textView7);
+        typedClasses[7] = (TextView) v.findViewById(R.id.textView8);
+        typedClasses[8] = (TextView) v.findViewById(R.id.textView9);
         select = (Button) v.findViewById(R.id.button);
         select.setOnClickListener(this);
 
@@ -64,6 +67,11 @@ public class SelectClassesFragment extends Fragment implements View.OnClickListe
     public void test(int textViewId,String string)
     {
         typedClasses[textViewId].setText(string);
+    }
+
+    public void removedClass(int textViewId)
+    {
+        typedClasses[textViewId].setText("");
     }
 
     @Override

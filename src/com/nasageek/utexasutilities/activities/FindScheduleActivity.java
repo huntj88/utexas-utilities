@@ -77,6 +77,15 @@ public class FindScheduleActivity extends FragmentActivity implements SelectClas
         }
     }
 
+    public void removeClass(View v)
+    {
+        if(classes.size()>=1) {
+            classes.remove(classes.size() - 1);
+            classAmount--;
+            one.removedClass(classAmount);
+        }
+    }
+
     public void lop(String string)
     {
         ArrayList<UTClass> innerArray = new ArrayList<>();
