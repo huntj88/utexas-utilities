@@ -32,45 +32,35 @@ public class CalculateAllSchedulesThread extends AsyncTask<Boolean, String, Inte
     @Override
     protected Integer doInBackground(Boolean... params) {
 
-        //todo          make it accept any
-        //todo          number of results.
-        //todo          currently if you accept
-        //todo          less than four,
-        //todo          its not gonna work
 
-
-        for(int x = 0;x<classes.get(0).size();x++)
-        {
-            temp1.add(classes.get(0).get(x).getArraySchedule());
-        }
-
-        int n = 1;
-
-        methodAlternateOne(n);
-        n++;
-
-        methodAlternateTwo(n);
-        n++;
-
-        methodAlternateOne(n);
-        n++;
-
-        temp2.removeAll(Collections.singleton(null));
-
-        for(int z=0;z<temp2.size();z++) {
-            for (int y = 0; y < 24; y++) {
-                String string = "";
-                for (int x = 0; x < 5; x++) {
-                    string += "[" + temp2.get(z)[x][y] + "]";
-                }
-                Log.d("schedule", string);
+        if(classes.size()!=0) {
+            for (int x = 0; x < classes.get(0).size(); x++) {
+                temp1.add(classes.get(0).get(x).getArraySchedule());
             }
-            Log.d("schedule", "------------");
+            int n = 1;
+            boolean firstArrayFinal = true;
+            for (int numClasses = 1; numClasses < classes.size(); numClasses += 1) {
+                if (n % 2 == 1) {
+                    methodAlternateOne(n);
+                    n++;
+                    firstArrayFinal = false;
+                } else {
+                    methodAlternateTwo(n);
+                    n++;
+                    firstArrayFinal = true;
+                }
+            }
+
+            if (!firstArrayFinal)
+                output(temp2);
+            else
+                output(temp1);
+
         }
-
-        Log.d("size",temp2.size()+"");
-
-
+        else
+        {
+            Log.e("class thread","NO CLASSES");
+        }
 
         return null;
     }
@@ -79,6 +69,24 @@ public class CalculateAllSchedulesThread extends AsyncTask<Boolean, String, Inte
     protected void onPostExecute(Integer h)
     {
 
+    }
+
+    public void output(ArrayList<int[][]> finalArray)
+    {
+        finalArray.removeAll(Collections.singleton(null));
+
+        /*for(int z=0;z<finalArray.size();z++) {
+            for (int y = 0; y < 24; y++) {
+                String string = "";
+                for (int x = 0; x < 5; x++) {
+                    string += "[" + finalArray.get(z)[x][y] + "]";
+                }
+                Log.d("schedule", string);
+            }
+            Log.d("schedule", "------------");
+        }*/
+
+        Log.d("size",finalArray.size()+"");
     }
 
 
@@ -96,6 +104,7 @@ public class CalculateAllSchedulesThread extends AsyncTask<Boolean, String, Inte
                 }
             }
         }
+        Log.d("size",temp2.size()+"");
     }
 
     public void methodAlternateTwo(int n)
@@ -112,6 +121,7 @@ public class CalculateAllSchedulesThread extends AsyncTask<Boolean, String, Inte
                 }
             }
         }
+        Log.d("size",temp1.size()+"");
     }
 
     public boolean containsCheck(ArrayList<int[][]> a,int[][] b)

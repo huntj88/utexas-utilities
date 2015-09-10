@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -37,6 +38,8 @@ public class FindScheduleActivity extends FragmentActivity implements SelectClas
     //the first dimension to represent all the types of classes: chem 101, CS 312, GEO 405.
     //the second dimension is the represent all the times that class is avaliable.
 
+    Toast toast;
+    boolean showToast=false;
 
 
     @Override
@@ -85,6 +88,8 @@ public class FindScheduleActivity extends FragmentActivity implements SelectClas
             String times="";
             boolean didDays=false;
             boolean didTime=false;
+            boolean open = false;
+            boolean found =false;
             while (scan.hasNextLine()) {
                 line = scan.nextLine();
                 if (line.contains("Days")) {
@@ -123,13 +128,31 @@ public class FindScheduleActivity extends FragmentActivity implements SelectClas
                     //Log.d("tag", times);
                     didTime=true;
                 }
-                if(didDays&&didTime)
+                if(line.contains("open"))
+                {
+                    open=true;
+                    found=true;
+                }
+                if(line.contains("closed")||line.contains("cancelled"))
+                {
+                    found=true;
+                }
+                if(didDays&&didTime&&open&&found)
                 {
 
                     innerArray.add(new UTClass(days,times,"cs","blah",classAmount));
                     didDays=false;
                     didTime=false;
                     days = "";
+                    open=false;
+                }
+                else if(didDays&&didTime&&found)
+                {
+                    //toast = Toast.makeText(this, "no open classes", Toast.LENGTH_LONG);
+                    didDays=false;
+                    didTime=false;
+                    days = "";
+                    open=false;
                 }
             }
             scan.close();
@@ -139,6 +162,10 @@ public class FindScheduleActivity extends FragmentActivity implements SelectClas
             classAmount++;
             classes.add(innerArray);
 
+        }
+        else
+        {
+            showToast=true;
         }
         Log.d("num type class",classes.size()+"");
     }
@@ -206,7 +233,13 @@ public class FindScheduleActivity extends FragmentActivity implements SelectClas
         @Override
         protected void onPostExecute(Integer h)
         {
-            one.test(classAmount, searchDepartment + " " + searchCourse);
+            if(!showToast)
+                one.test(classAmount - 1, searchDepartment + " " + searchCourse);
+            else {
+                toast = Toast.makeText(getApplicationContext(), "no open classes", Toast.LENGTH_LONG);
+                toast.show();
+                showToast=false;
+            }
             //one.typedClasses[classAmount-1].setText(searchDepartment+" "+searchCourse);
         }
     }
